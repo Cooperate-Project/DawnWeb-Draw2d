@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Draw2d - Initial Testing code</title>
+
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/draw2d/dist/pathfinding-browser.min.js"></script>
+    <script src="bower_components/draw2d/dist/json2.js"></script>
+    <script src="bower_components/draw2d/dist/patched_Class.js"></script>
+    <script src="bower_components/draw2d/dist/patched_canvg.js"></script>
+    <script src="bower_components/draw2d/dist/rgbcolor.js"></script>
+    <script src="bower_components/draw2d/dist/jquery.contextmenu.js"></script>
+    <script src="bower_components/draw2d/dist/jquery-touch_punch.js"></script>
+    <script src="bower_components/draw2d/dist/jquery.autoresize.js"></script>
+    <script src="bower_components/draw2d/dist/patched_raphael.js"></script>
+    <script src="bower_components/shifty/dist/shifty.min.js"></script>
+    <script src="bower_components/draw2d/dist/draw2d.js"></script>
+
+    <script type="text/javascript">
+
+        $(window).load(function () {
+
+
+            var canvas = new draw2d.Canvas("gfx_holder");
+
+            canvas.add(new draw2d.shape.basic.Oval(), 100, 100);
+            canvas.add(new draw2d.shape.basic.Rectangle(), 120, 150);
+
+            canvas.add(new draw2d.shape.node.Start(), 80, 80);
+            canvas.add(new draw2d.shape.node.Start(), 50, 50);
+
+            canvas.add(new draw2d.shape.node.End(), 150, 150);
+            canvas.add(new draw2d.shape.node.End(), 350, 250);
+
+        });
+
+    </script>
+</head>
+<body>
+<div id="gfx_holder"
+     style="width: 1500px; height: 1500px; cursor: default; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</div>
+</body>
+</html>

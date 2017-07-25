@@ -1,0 +1,11 @@
+bin/
+state/
+target/
+*~
+~*.docx
+~*.pptx
+com.chronon.sb.browser.launcher.prefs
+*.DS_Store
+bundles/de.cooperateproject.cdo.dawn.frontend/web_content/js/lib/
+bundles/de.cooperateproject.cdo.dawn.frontend.accessible/web_content/jquery-ui/
+bundles/.idea/
