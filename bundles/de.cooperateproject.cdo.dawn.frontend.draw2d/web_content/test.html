@@ -24,14 +24,42 @@
 
             var canvas = new draw2d.Canvas("gfx_holder");
 
-            canvas.add(new draw2d.shape.basic.Oval(), 100, 100);
-            canvas.add(new draw2d.shape.basic.Rectangle(), 120, 150);
+            var jsonPrototype = {
+                "type": "draw2d.shape.basic.Label",
+                "alpha": 1,
+                "angle": 0,
+                "userData": {},
+                "cssClass": "draw2d_shape_basic_Label",
+                "ports": [],
+                "bgColor": "none",
+                "color": "#1B1B1B",
+                "stroke": 1,
+                "radius": 0,
+                "dasharray": null,
+                "outlineStroke": 0,
+                "outlineColor": "none",
+                "fontSize": 12,
+                "fontColor": "#080808",
+                "fontFamily": null
+            };
 
-            canvas.add(new draw2d.shape.node.Start(), 80, 80);
-            canvas.add(new draw2d.shape.node.Start(), 50, 50);
+            var jsonData = [
+                {
+                    "id": "cd622658-821e-ac6e-7dfb-bc474a343200",
+                    "x": 141,
+                    "y": 109,
+                    "width": 122.28125,
+                    "height": 21,
+                    "text": "draw2d.shape.basic.Oval"
+                }
+            ];
 
-            canvas.add(new draw2d.shape.node.End(), 150, 150);
-            canvas.add(new draw2d.shape.node.End(), 350, 250);
+            $.each(jsonData, function (i, elem) {
+               $.extend(elem, jsonPrototype);
+            });
+
+            var reader = new draw2d.io.json.Reader();
+            reader.unmarshal(canvas, jsonData);
 
         });
 
