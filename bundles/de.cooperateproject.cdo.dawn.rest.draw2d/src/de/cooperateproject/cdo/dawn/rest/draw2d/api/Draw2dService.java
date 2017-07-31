@@ -8,4 +8,5 @@ public interface Draw2dService {
 	
 	Collection<Draw2dLabel> getClassesAsLabels(String projectId, String modelId);
 
+	boolean setLabelsAsClasses(String labels, String projectId, String modelId);
 }

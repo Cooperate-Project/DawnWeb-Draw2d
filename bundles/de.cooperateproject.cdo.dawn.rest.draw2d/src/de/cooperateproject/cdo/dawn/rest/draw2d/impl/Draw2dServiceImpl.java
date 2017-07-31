@@ -2,7 +2,10 @@ package de.cooperateproject.cdo.dawn.rest.draw2d.impl;
 
 import java.util.Collection;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -36,6 +39,20 @@ public class Draw2dServiceImpl implements Draw2dService {
 			@PathParam("modelId") String modelId) {
 		Diagram diagram = getDiagram(projectId, modelId);
 		return Draw2dConverter.diagram2labels(diagram);
+	}
+
+	@Override
+	@POST
+	@Path("/update/{projectId}/{modelId}")
+	//@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Updates diagrams with data from draw2d labels")
+	public boolean setLabelsAsClasses(@FormParam("labels") String labels, @PathParam("projectId") String projectId,
+			@PathParam("modelId") String modelId) {
+		
+		System.out.println(labels);
+		
+		// TODO: Implement?
+		return false;
 	}
 
 }

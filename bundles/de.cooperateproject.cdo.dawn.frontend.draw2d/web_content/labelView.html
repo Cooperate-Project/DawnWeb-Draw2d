@@ -40,6 +40,18 @@
         }
     };
 
+    $.reduce = function (obj1, obj2) {
+        for (var k in obj2) {
+            if (obj1.hasOwnProperty(k) && obj2.hasOwnProperty(k)) {
+                if (typeof obj1[k] == "object" && typeof obj2[k == "object"]) {
+                    $.reduce(obj1[k], obj2[k]);
+                } else {
+                    delete obj1[k];
+                }
+            }
+        }
+    };
+
     var project = $.urlParam('project');
     var model = $.urlParam('model');
 
@@ -61,7 +73,8 @@
         "outlineColor": "none",
         "fontSize": 12,
         "fontColor": "#080808",
-        "fontFamily": null
+        "fontFamily": null,
+        "editor": "draw2d.ui.LabelInplaceEditor"
     };
 
     // Get data from server
@@ -79,10 +92,31 @@
             var reader = new draw2d.io.json.Reader();
             reader.unmarshal(canvas, jsonData);
 
+            canvas.getCommandStack().addEventListener(function (e) {
+                if (e.isPostChangeEvent()) {
+                    console.log("CHANGE!");
+                    var writer = new draw2d.io.json.Writer();
+                    writer.marshal(canvas, function (json) {
+
+                        $.each(json, function (i, elem) {
+                            $.reduce(elem, jsonPrototype);
+                        });
+
+                        console.log(json);
+
+                        DawnWeb.getClient().then(function (server) {
+                           return server.apis.draw2d.setLabelsAsClasses({projectId: project, modelId: model, labels: JSON.stringify(json)});
+                        })
+                            .then(function (result) {
+                                console.log("Update answer:" + result);
+                        });
+
+                    });
+                }
+            });
+
 
         });
-
-
 
 
 </script>
