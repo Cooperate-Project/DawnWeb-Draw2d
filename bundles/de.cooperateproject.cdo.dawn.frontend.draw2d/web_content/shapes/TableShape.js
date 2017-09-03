@@ -7,7 +7,6 @@ TableShape = draw2d.shape.layout.VerticalLayout.extend({
     {
         this._super($.extend({bgColor:"#dbddde", color:"#d7d7d7", stroke:1, radius:3},attr));
 
-
         this.classLabel = new draw2d.shape.basic.Label({
             text:"ClassName",
             stroke:1,
@@ -21,6 +20,8 @@ TableShape = draw2d.shape.layout.VerticalLayout.extend({
 
 
         this.add(this.classLabel);
+
+
     },
 
 

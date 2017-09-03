@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Draw2d - Label View 4 testing</title>
+
+    <script src="../bower_components/jquery/jquery.min.js"></script>
+    <script src="../bower_components/draw2d/dist/pathfinding-browser.min.js"></script>
+    <script src="../bower_components/draw2d/dist/json2.js"></script>
+    <script src="../bower_components/draw2d/dist/patched_Class.js"></script>
+    <script src="../bower_components/draw2d/dist/patched_canvg.js"></script>
+    <script src="../bower_components/draw2d/dist/rgbcolor.js"></script>
+    <script src="../bower_components/draw2d/dist/jquery.contextmenu.js"></script>
+    <script src="../bower_components/draw2d/dist/jquery-touch_punch.js"></script>
+    <script src="../bower_components/draw2d/dist/jquery.autoresize.js"></script>
+    <script src="../bower_components/draw2d/dist/patched_raphael.js"></script>
+    <script src="../bower_components/shifty/dist/shifty.min.js"></script>
+    <script src="../bower_components/draw2d/dist/draw2d.js"></script>
+
+    <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/lib/swagger-client.js"></script>
+    <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/dawnweb.js"></script>
+    <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/consts.js"></script>
+
+    <script src="../shapes/testShape.js"></script>
+    <script src="../shapes/TableShape.js"></script>
+    <script src="../shapes/LegacyClassShape.js"></script>
+
+    <script src="../shapes/ListCompartment.js"></script>
+    <script src="../shapes/AttributeCompartment.js"></script>
+    <script src="../shapes/OperationCompartment.js"></script>
+    <script src="../shapes/ClassShape.js"></script>
+
+    <script type="text/javascript">
+    //DawnWeb.init();
+    </script>
+
+    <link rel="stylesheet" href="../css/contextmenu.css">
+
+</head>
+<body>
+<div id="gfx_holder"
+     style="width: 1500px; height: 1500px; cursor: default; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</div>
+<script type="text/javascript">
+    $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return decodeURI(results[1]) || 0;
+        }
+    };
+
+    $.reduce = function (obj1, obj2) {
+        for (var k in obj2) {
+            if (obj1.hasOwnProperty(k) && obj2.hasOwnProperty(k)) {
+                if (typeof obj1[k] == "object" && typeof obj2[k == "object"]) {
+                    $.reduce(obj1[k], obj2[k]);
+                } else {
+                    delete obj1[k];
+                }
+            }
+        }
+    };
+
+    var project = $.urlParam('project');
+    var model = $.urlParam('model');
+
+    var canvas = new draw2d.Canvas("gfx_holder");
+
+    // Create some test shapes
+    /*var class1 = new testShape({x: 100, y: 100});
+    canvas.add(class1);
+
+    var class2 = new testShape({
+        x: 400, y: 100
+    });
+    canvas.add(class2);
+*/
+    var table1 = new LegacyClassShape({
+        x: 700, y: 100
+    });
+    /*table1.setName("Student");
+    table1.addSeparator();
+    //table1.setY(300);
+    table1.addProperty("name: String");
+    table1.addProperty("id: Int");
+    table1.addSeparator();
+    table1.addFunction("doSmth(): void");
+    canvas.add(table1);*/
+
+    table1.setName("Test");
+    table1.addFunction("fA");
+    table1.addProperty("pA");
+    canvas.add(table1);
+
+    var table2 = new LegacyClassShape();
+    table2.setName("Test 2");
+    canvas.add(table2);
+
+    var class1 = new ClassShape({
+        x: 400, y: 400
+    });
+
+    class1.setName("Class A");
+    class1.getAttributes().addAttribute("someProp");
+    class1.getAttributes().addAttribute("someOtherProp");
+    class1.getOperations().addOperation("doThis()");
+    class1.getOperations().addOperation("doThat()");
+
+    canvas.add(class1);
+
+    console.log(table1.propertyCount + " " + table1.functionCount);
+
+    var writer = new draw2d.io.json.Writer();
+    writer.marshal(canvas, function (json) {
+        console.log(json);
+    });
+
+</script>
+</body>
+</html>
