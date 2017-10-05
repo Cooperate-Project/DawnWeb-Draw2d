@@ -32,17 +32,17 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
                 },
                 callback: $.proxy(function (key, options) {
                     switch (key) {
-                        case "newAtt":
+                        case "newAttribute":
                             setTimeout(function () {
-                                _table.attributeCompartment.addAttribute("_new_").onDoubleClick();
+                                _table.attributeCompartment.addAttribute("").onDoubleClick();
                             }, 10);
                             break;
-                        case "newOp":
+                        case "newOperation":
                             setTimeout(function () {
-                                _table.operationCompartment.addOperation("_new_").onDoubleClick();
+                                _table.operationCompartment.addOperation("").onDoubleClick();
                             }, 10);
                             break;
-                        case "delete":
+                        case "deleteClass":
                             var cmd = new draw2d.command.CommandDelete(_table);
                             emitter.getCanvas().getCommandStack().execute(cmd);
                             break;
@@ -54,9 +54,9 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
                 x: event.x,
                 y: event.y,
                 items: {
-                    "newAtt": {name: "New Attribute"},
-                    "newOp": {name: "New Operation"},
-                    "delete": {name: "Delete Class"}
+                    "newAttribute": {name: "New Attribute"},
+                    "newOperation": {name: "New Operation"},
+                    "deleteClass": {name: "Delete Class"}
                 }
             });
         });
@@ -64,19 +64,13 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         this.add(this.classLabel);
         this.add(this.attributeCompartment);
         this.add(this.operationCompartment);
+
         var hport = this.createPort("hybrid");
         hport.setName("port_" + this.getId());
-        hport.setConnectionAnchor(new draw2d.layout.anchor.ChopboxConnectionAnchor(this));
+        hport.setConnectionAnchor(new draw2d.layout.anchor.FanConnectionAnchor(this));
 
     },
 
-
-    /**
-     * @method
-     * Set the name of the DB table. Visually it is the header of the shape
-     *
-     * @param name
-     */
     setName: function (name) {
         this.classLabel.setText(name);
 
@@ -91,12 +85,6 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         return this.operationCompartment;
     },
 
-    /**
-     * @method
-     * Return an objects with all important attributes for XML or JSON serialization
-     *
-     * @returns {Object}
-     */
     getPersistentAttributes: function () {
         var memento = {type: "ClassShape"};
 
@@ -111,13 +99,6 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         return memento;
     },
 
-    /**
-     * @method
-     * Read all attributes from the serialized properties and transfer them into the shape.
-     *
-     * @param {Object} memento
-     * @return
-     */
     setPersistentAttributes: function (memento) {
         this._super(memento);
 

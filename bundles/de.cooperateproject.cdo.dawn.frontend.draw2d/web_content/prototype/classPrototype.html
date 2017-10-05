@@ -29,6 +29,8 @@
     <script src="../shapes/AttributeCompartment.js"></script>
     <script src="../shapes/OperationCompartment.js"></script>
     <script src="../shapes/ClassShape.js"></script>
+    <script src="../shapes/RichConnection.js"></script>
+    <script src="../shapes/SimpleArrowDecorator.js"></script>
 
     <script type="text/javascript">
     //DawnWeb.init();
@@ -68,27 +70,33 @@
     var model = $.urlParam('model');
 
     var canvas = new draw2d.Canvas("gfx_holder");
+    canvas.installEditPolicy(new draw2d.policy.canvas.FadeoutDecorationPolicy());
+    canvas.installEditPolicy(new draw2d.policy.connection.DragConnectionCreatePolicy({
+        createConnection: function () {
+            return new RichConnection();
+        }
+    }));
 
     // Create some test shapes
     /*var class1 = new testShape({x: 100, y: 100});
-    canvas.add(class1);
+     canvas.add(class1);
 
-    var class2 = new testShape({
-        x: 400, y: 100
-    });
-    canvas.add(class2);
-*/
+     var class2 = new testShape({
+     x: 400, y: 100
+     });
+     canvas.add(class2);
+     */
     var table1 = new LegacyClassShape({
         x: 700, y: 100
     });
     /*table1.setName("Student");
-    table1.addSeparator();
-    //table1.setY(300);
-    table1.addProperty("name: String");
-    table1.addProperty("id: Int");
-    table1.addSeparator();
-    table1.addFunction("doSmth(): void");
-    canvas.add(table1);*/
+     table1.addSeparator();
+     //table1.setY(300);
+     table1.addProperty("name: String");
+     table1.addProperty("id: Int");
+     table1.addSeparator();
+     table1.addFunction("doSmth(): void");
+     canvas.add(table1);*/
 
     table1.setName("Test");
     table1.addFunction("fA");
@@ -112,6 +120,16 @@
     canvas.add(class1);
 
     console.log(table1.propertyCount + " " + table1.functionCount);
+
+    var class2 = new ClassShape();
+    class2.setName("Class B");
+    class2.getAttributes().addAttribute("someOhterOhterProp");
+    canvas.add(class2);
+
+    var class3 = new ClassShape();
+    class3.setName("Class B");
+    class3.getAttributes().addAttribute("someOhterOhterProp");
+    canvas.add(class3);
 
     var writer = new draw2d.io.json.Writer();
     writer.marshal(canvas, function (json) {

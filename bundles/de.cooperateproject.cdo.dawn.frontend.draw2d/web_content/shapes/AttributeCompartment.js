@@ -40,7 +40,7 @@ AttributeCompartment = ListCompartment.extend({
                     switch (key) {
                         case "new":
                             setTimeout(function () {
-                                _table.addAttribute("_new_").onDoubleClick();
+                                _table.addAttribute("").onDoubleClick();
                             }, 10);
                             break;
                         case "delete":

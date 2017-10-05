@@ -40,7 +40,7 @@ OperationCompartment = ListCompartment.extend({
                     switch (key) {
                         case "new":
                             setTimeout(function () {
-                                _table.addOperation("_new_").onDoubleClick();
+                                _table.addOperation("").onDoubleClick();
                             }, 10);
                             break;
                         case "delete":
