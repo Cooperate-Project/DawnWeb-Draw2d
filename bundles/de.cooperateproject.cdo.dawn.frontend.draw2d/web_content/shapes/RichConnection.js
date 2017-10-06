@@ -75,6 +75,7 @@ var RichConnection = draw2d.Connection.extend({
         });
     },
     changeDirection: function () {
+        console.log("Changed direction!");
         this.directionSourceToTarget = !this.directionSourceToTarget;
         var swapElem = this.getSourceDecorator();
         this.setSourceDecorator(this.getTargetDecorator());
@@ -82,6 +83,7 @@ var RichConnection = draw2d.Connection.extend({
     },
     setDecoration: function (style) {
         this.decorationType = style;
+        this.directionSourceToTarget = true;
 
         switch (style) {
             case "association":
@@ -127,7 +129,7 @@ var RichConnection = draw2d.Connection.extend({
 
         memento.id = this.id;
 
-        // Code from original connector implementation
+        // Code from Connector
         var parentNode = this.getSource().getParent();
         while (parentNode.getParent() !== null) {
             parentNode = parentNode.getParent();
@@ -160,9 +162,10 @@ var RichConnection = draw2d.Connection.extend({
         this.label.setText(memento.labelText);
         this.setDecoration(memento.decorationType);
 
-        if (!this.directionSourceToTarget) {
+        if (!memento.directionSourceToTarget) {
             this.changeDirection();
         }
+        this.directionSourceToTarget = memento.directionSourceToTarget;
 
         return this;
     }

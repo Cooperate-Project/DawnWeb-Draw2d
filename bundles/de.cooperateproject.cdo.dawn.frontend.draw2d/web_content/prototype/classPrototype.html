@@ -79,15 +79,18 @@
         // Fix z order
         $.each(docJson, function (i, o) {
             moveParentsBack(canvas.getFigure(o.id));
-        })
+        });
 
     }
 
     function moveParentsBack(figure) {
-        figure.toBack();
+        if (figure != null) {
+            figure.toBack();
+            console.log("Moved back:" + figure.getName());
 
-        if (figure.parentFigure != null) {
-            moveParentsBack(canvas.getFigure(figure.parentFigure));
+            if (figure.parentFigure != null) {
+                moveParentsBack(canvas.getFigure(figure.parentFigure));
+            }
         }
     }
 
@@ -100,8 +103,7 @@
                     }
                 );
             }
-        })
-        ;
+        });
     }
 
     $.urlParam = function (name) {

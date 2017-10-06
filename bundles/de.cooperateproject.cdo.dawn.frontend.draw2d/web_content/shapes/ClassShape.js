@@ -86,6 +86,9 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
 
         return this;
     },
+    getName: function() {
+        return this.classLabel.getText();
+    },
 
     getAttributes: function () {
         return this.attributeCompartment;
@@ -103,6 +106,19 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         memento.id = this.id;
         memento.parentFigure = this.parentFigure;
 
+        // Code from Node
+        if (this.persistPorts === true) {
+            memento.ports = [];
+            this.getPorts().each(function (i, port) {
+                memento.ports.push($.extend(port.getPersistentAttributes(), {
+                    name: port.getName(),
+                    port: port.NAME,
+                    locator: port.getLocator().NAME
+                }));
+            });
+        }
+        // End of Code Snippet
+
         memento.name = this.classLabel.getText();
         memento.attributeCompartment = this.attributeCompartment.getPersistentAttributes();
         memento.operationCompartment = this.operationCompartment.getPersistentAttributes();
@@ -115,6 +131,20 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
 
         this.setName(memento.name);
         this.parentFigure = memento.parentFigure;
+
+        // Code from Node
+        if (typeof memento.ports !== "undefined") {
+            this.persistPorts = true;
+            this.resetPorts();
+            $.each(memento.ports, $.proxy(function (i, e) {
+                var port = eval("new " + e.port + "()");
+                var locator = eval("new " + e.locator + "()");
+                port.setPersistentAttributes(e);
+                this.addPort(port, locator);
+                port.setName(e.name);
+            }, this));
+        }
+        // End of Code Snippet
 
         if (typeof memento.attributeCompartment !== "undefined") {
             this.attributeCompartment.setPersistentAttributes(memento.attributeCompartment);
