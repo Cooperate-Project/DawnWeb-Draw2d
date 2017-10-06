@@ -105,11 +105,11 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         this.setName(memento.name);
 
         if (typeof memento.attributeCompartment !== "undefined") {
-            this.attributeCompartment.setPersistentAttributes(memento);
+            this.attributeCompartment.setPersistentAttributes(memento.attributeCompartment);
         }
 
         if (typeof memento.operationCompartment !== "undefined") {
-            this.operationCompartment.setPersistentAttributes(memento);
+            this.operationCompartment.setPersistentAttributes(memento.operationCompartment);
         }
 
         return this;

@@ -31,19 +31,47 @@
     <script src="../shapes/ClassShape.js"></script>
     <script src="../shapes/RichConnection.js"></script>
     <script src="../shapes/SimpleArrowDecorator.js"></script>
+    <script src="../shapes/PackageShape.js"></script>
 
     <script type="text/javascript">
-    //DawnWeb.init();
+        //DawnWeb.init();
     </script>
 
     <link rel="stylesheet" href="../css/contextmenu.css">
 
 </head>
 <body>
+<div id="button">
+    <button onclick="writeJSON()">Write JSON</button>
+    <button onclick="readJSON()">Read JSON</button>
+</div>
 <div id="gfx_holder"
      style="width: 1500px; height: 1500px; cursor: default; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
 </div>
 <script type="text/javascript">
+
+    var docJson = "";
+
+    function writeJSON() {
+        console.log("Writing JSON...");
+
+        // Write JSON
+        var writer = new draw2d.io.json.Writer();
+        writer.marshal(canvas, function (json) {
+            console.log(json);
+            docJson = json;
+        });
+
+        canvas.clear();
+    }
+
+    function readJSON() {
+        console.log("Reading JSON...");
+
+        var reader = new draw2d.io.json.Reader();
+        reader.unmarshal(canvas, docJson);
+    }
+
     $.urlParam = function (name) {
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results == null) {
@@ -70,6 +98,11 @@
     var model = $.urlParam('model');
 
     var canvas = new draw2d.Canvas("gfx_holder");
+
+    canvas.installEditPolicy(new draw2d.policy.canvas.SnapToCenterEditPolicy);
+    canvas.installEditPolicy(new draw2d.policy.canvas.SnapToGeometryEditPolicy);
+    canvas.installEditPolicy(new draw2d.policy.canvas.SnapToInBetweenEditPolicy);
+
     canvas.installEditPolicy(new draw2d.policy.canvas.FadeoutDecorationPolicy());
     canvas.installEditPolicy(new draw2d.policy.connection.DragConnectionCreatePolicy({
         createConnection: function () {
@@ -77,64 +110,40 @@
         }
     }));
 
-    // Create some test shapes
-    /*var class1 = new testShape({x: 100, y: 100});
-     canvas.add(class1);
-
-     var class2 = new testShape({
-     x: 400, y: 100
-     });
-     canvas.add(class2);
-     */
-    var table1 = new LegacyClassShape({
-        x: 700, y: 100
+    // Package A
+    var pgA = new PackageShape({
+        x: 600,
+        y: 600
     });
-    /*table1.setName("Student");
-     table1.addSeparator();
-     //table1.setY(300);
-     table1.addProperty("name: String");
-     table1.addProperty("id: Int");
-     table1.addSeparator();
-     table1.addFunction("doSmth(): void");
-     canvas.add(table1);*/
+    pgA.setName("Package A");
+    canvas.add(pgA);
 
-    table1.setName("Test");
-    table1.addFunction("fA");
-    table1.addProperty("pA");
-    canvas.add(table1);
+    // Package B
+    var pgB = new PackageShape({
+        x: 300,
+        y: 600
+    });
+    pgB.setName("Package B");
+    canvas.add(pgB);
 
-    var table2 = new LegacyClassShape();
-    table2.setName("Test 2");
-    canvas.add(table2);
-
+    // Class A
     var class1 = new ClassShape({
-        x: 400, y: 400
+        x: 650, y: 650
     });
-
     class1.setName("Class A");
     class1.getAttributes().addAttribute("someProp");
     class1.getAttributes().addAttribute("someOtherProp");
     class1.getOperations().addOperation("doThis()");
     class1.getOperations().addOperation("doThat()");
-
     canvas.add(class1);
 
-    console.log(table1.propertyCount + " " + table1.functionCount);
-
-    var class2 = new ClassShape();
+    // Class B
+    var class2 = new ClassShape({
+        x: 100, y: 100
+    });
     class2.setName("Class B");
     class2.getAttributes().addAttribute("someOhterOhterProp");
     canvas.add(class2);
-
-    var class3 = new ClassShape();
-    class3.setName("Class B");
-    class3.getAttributes().addAttribute("someOhterOhterProp");
-    canvas.add(class3);
-
-    var writer = new draw2d.io.json.Writer();
-    writer.marshal(canvas, function (json) {
-        console.log(json);
-    });
 
 </script>
 </body>
