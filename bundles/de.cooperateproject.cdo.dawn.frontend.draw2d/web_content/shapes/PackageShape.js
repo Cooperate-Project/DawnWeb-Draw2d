@@ -69,6 +69,7 @@ PackageShape = draw2d.shape.composite.Raft.extend({
         memento.id = this.id;
         memento.height = this.height;
         memento.width = this.width;
+        memento.parentFigure = this.parentFigure;
 
         memento.aboardedFigures = this.getAboardFigures(true).map(function (fig) {
             return fig.getId();
@@ -83,10 +84,11 @@ PackageShape = draw2d.shape.composite.Raft.extend({
         this._super(memento);
 
         this.packageLabel.setText(memento.name);
+        this.parentFigure = memento.parentFigure;
 
         // Recalculate package children
         this.getAboardFigures(true);
-        // Something else?
+
 
         return this;
     }

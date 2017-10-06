@@ -55,9 +55,13 @@
     function writeJSON() {
         console.log("Writing JSON...");
 
+        // Insert parent information (for z order)
+        setParentInformation();
+
         // Write JSON
         var writer = new draw2d.io.json.Writer();
         writer.marshal(canvas, function (json) {
+
             console.log(json);
             docJson = json;
         });
@@ -68,8 +72,36 @@
     function readJSON() {
         console.log("Reading JSON...");
 
+        // Read JSON
         var reader = new draw2d.io.json.Reader();
         reader.unmarshal(canvas, docJson);
+
+        // Fix z order
+        $.each(docJson, function (i, o) {
+            moveParentsBack(canvas.getFigure(o.id));
+        })
+
+    }
+
+    function moveParentsBack(figure) {
+        figure.toBack();
+
+        if (figure.parentFigure != null) {
+            moveParentsBack(canvas.getFigure(figure.parentFigure));
+        }
+    }
+
+    function setParentInformation() {
+        var figures = canvas.getFigures().data;
+        $.each(figures, function (i, p) {
+            if (p.NAME == "PackageShape") {
+                $.each(p.getAboardFigures(true).data, function (i, o) {
+                        canvas.getFigure(o.getId()).parentFigure = p.getId();
+                    }
+                );
+            }
+        })
+        ;
     }
 
     $.urlParam = function (name) {

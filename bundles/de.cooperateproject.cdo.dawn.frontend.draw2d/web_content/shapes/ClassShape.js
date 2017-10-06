@@ -32,6 +32,12 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
                 },
                 callback: $.proxy(function (key, options) {
                     switch (key) {
+                        case "front":
+                            _table.toFront();
+                            break;
+                        case "back":
+                            _table.toBack();
+                            break;
                         case "newAttribute":
                             setTimeout(function () {
                                 _table.attributeCompartment.addAttribute("").onDoubleClick();
@@ -56,6 +62,10 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
                 items: {
                     "newAttribute": {name: "New Attribute"},
                     "newOperation": {name: "New Operation"},
+                    "sep1": "---------",
+                    "front": {name: "Move to front"},
+                    "back": {name: "Move to back"},
+                    "sep2": "---------",
                     "deleteClass": {name: "Delete Class"}
                 }
             });
@@ -91,6 +101,7 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         memento.x = this.x;
         memento.y = this.y;
         memento.id = this.id;
+        memento.parentFigure = this.parentFigure;
 
         memento.name = this.classLabel.getText();
         memento.attributeCompartment = this.attributeCompartment.getPersistentAttributes();
@@ -103,6 +114,7 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         this._super(memento);
 
         this.setName(memento.name);
+        this.parentFigure = memento.parentFigure;
 
         if (typeof memento.attributeCompartment !== "undefined") {
             this.attributeCompartment.setPersistentAttributes(memento.attributeCompartment);
