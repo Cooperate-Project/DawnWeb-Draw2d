@@ -86,7 +86,7 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
 
         return this;
     },
-    getName: function() {
+    getName: function () {
         return this.classLabel.getText();
     },
 
@@ -104,20 +104,9 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         memento.x = this.x;
         memento.y = this.y;
         memento.id = this.id;
-        memento.parentFigure = this.parentFigure;
 
-        // Code from Node
-        if (this.persistPorts === true) {
-            memento.ports = [];
-            this.getPorts().each(function (i, port) {
-                memento.ports.push($.extend(port.getPersistentAttributes(), {
-                    name: port.getName(),
-                    port: port.NAME,
-                    locator: port.getLocator().NAME
-                }));
-            });
-        }
-        // End of Code Snippet
+        // Also save the just in time generated parent figure information
+        memento.parentFigure = this.parentFigure;
 
         memento.name = this.classLabel.getText();
         memento.attributeCompartment = this.attributeCompartment.getPersistentAttributes();
@@ -132,19 +121,13 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         this.setName(memento.name);
         this.parentFigure = memento.parentFigure;
 
-        // Code from Node
-        if (typeof memento.ports !== "undefined") {
-            this.persistPorts = true;
-            this.resetPorts();
-            $.each(memento.ports, $.proxy(function (i, e) {
-                var port = eval("new " + e.port + "()");
-                var locator = eval("new " + e.locator + "()");
-                port.setPersistentAttributes(e);
-                this.addPort(port, locator);
-                port.setName(e.name);
-            }, this));
-        }
-        // End of Code Snippet
+        // Generate a new port, delete the default one (code from Node class)
+        var _table = this;
+        this.resetPorts();
+        var port = new draw2d.HybridPort();
+        var locator = new draw2d.layout.locator.InputPortLocator();
+        this.addPort(port, locator);
+        port.setName("port_" + _table.getId());
 
         if (typeof memento.attributeCompartment !== "undefined") {
             this.attributeCompartment.setPersistentAttributes(memento.attributeCompartment);

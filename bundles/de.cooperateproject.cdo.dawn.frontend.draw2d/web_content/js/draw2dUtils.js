@@ -7,9 +7,11 @@ var Draw2dUtils = {
 
         // Write JSON
         var writer = new draw2d.io.json.Writer();
+        var doc = "";
         writer.marshal(view, function (json) {
-            return json;
+            doc = json;
         });
+        return doc;
     },
 
     setJSON: function (view, json) {
@@ -20,7 +22,7 @@ var Draw2dUtils = {
 
         // Fix z order by recursively moving parent figures backwards
         $.each(json, function (i, o) {
-            this.moveParentsBack(canvas.getFigure(o.id));
+            Draw2dUtils.moveParentsBack(canvas.getFigure(o.id));
         });
     },
 
@@ -41,7 +43,7 @@ var Draw2dUtils = {
             figure.toBack();
 
             if (figure.parentFigure != null) {
-                moveParentsBack(canvas.getFigure(figure.parentFigure));
+                Draw2dUtils.moveParentsBack(canvas.getFigure(figure.parentFigure));
             }
         }
     }

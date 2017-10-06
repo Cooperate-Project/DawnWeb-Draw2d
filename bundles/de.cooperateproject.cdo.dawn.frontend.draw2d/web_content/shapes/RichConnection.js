@@ -5,6 +5,7 @@ var RichConnection = draw2d.Connection.extend({
 
         this._super(attr);
 
+        // Initialize with empty decoration type and default direction
         this.decorationType = null;
         this.directionSourceToTarget = true;
 
@@ -14,12 +15,14 @@ var RichConnection = draw2d.Connection.extend({
         this.setColor('#333333');
         this.setDecoration("connection");
 
+        // Empty label (aka. does not exist)
         this.label = new draw2d.shape.basic.Label({
             text: "",
             stroke: 0,
             editor: new draw2d.ui.LabelEditor()
         });
 
+        // Shows the label parallel to the line
         this.add(this.label, new draw2d.layout.locator.ParallelMidpointLocator);
     },
 
@@ -75,7 +78,7 @@ var RichConnection = draw2d.Connection.extend({
         });
     },
     changeDirection: function () {
-        console.log("Changed direction!");
+        // Swap the decoration elements of source and target
         this.directionSourceToTarget = !this.directionSourceToTarget;
         var swapElem = this.getSourceDecorator();
         this.setSourceDecorator(this.getTargetDecorator());

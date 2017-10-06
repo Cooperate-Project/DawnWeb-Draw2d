@@ -11,6 +11,7 @@ draw2d.decoration.connection.SimpleArrowDecorator = draw2d.decoration.connection
     {
         var st = paper.set();
 
+        // Custom none filled arrow
         st.push(paper.path(["M0 0" ,
             "L", this.width, " ", -this.height/2
             ].join("")));

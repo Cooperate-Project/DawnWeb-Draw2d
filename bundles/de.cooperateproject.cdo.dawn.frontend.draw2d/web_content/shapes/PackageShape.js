@@ -15,6 +15,7 @@ PackageShape = draw2d.shape.composite.Raft.extend({
             editor: new draw2d.ui.LabelInplaceEditor()
         });
 
+        // Add top left package label
         this.add(this.packageLabel, new draw2d.layout.locator.XYAbsPortLocator(0, -26));
 
         this.width = 150;
@@ -71,6 +72,7 @@ PackageShape = draw2d.shape.composite.Raft.extend({
         memento.width = this.width;
         memento.parentFigure = this.parentFigure;
 
+        // Add ids of child figures
         memento.aboardedFigures = this.getAboardFigures(true).map(function (fig) {
             return fig.getId();
         });
@@ -86,7 +88,7 @@ PackageShape = draw2d.shape.composite.Raft.extend({
         this.packageLabel.setText(memento.name);
         this.parentFigure = memento.parentFigure;
 
-        // Recalculate package children
+        // Recalculate package children (true adds them to the list)
         this.getAboardFigures(true);
 
 
