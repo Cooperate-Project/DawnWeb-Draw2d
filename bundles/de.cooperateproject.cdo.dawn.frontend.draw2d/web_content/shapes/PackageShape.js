@@ -17,8 +17,8 @@ PackageShape = draw2d.shape.composite.Raft.extend({
 
         this.add(this.packageLabel, new draw2d.layout.locator.XYAbsPortLocator(0, -26));
 
-        this.width = 200;
-        this.height = 200;
+        this.width = 150;
+        this.height = 100;
 
     },
     onContextMenu: function (x, y) {

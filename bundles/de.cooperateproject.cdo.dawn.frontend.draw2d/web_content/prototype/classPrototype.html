@@ -17,6 +17,8 @@
     <script src="../bower_components/shifty/dist/shifty.min.js"></script>
     <script src="../bower_components/draw2d/dist/draw2d.js"></script>
 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/lib/swagger-client.js"></script>
     <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/dawnweb.js"></script>
     <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/consts.js"></script>
@@ -32,9 +34,10 @@
     <script src="../shapes/RichConnection.js"></script>
     <script src="../shapes/SimpleArrowDecorator.js"></script>
     <script src="../shapes/PackageShape.js"></script>
+    <script src="../shapes/View.js"></script>
 
     <script type="text/javascript">
-        //DawnWeb.init();
+    //DawnWeb.init();
     </script>
 
     <link rel="stylesheet" href="../css/contextmenu.css">
@@ -44,6 +47,8 @@
 <div id="button">
     <button onclick="writeJSON()">Write JSON</button>
     <button onclick="readJSON()">Read JSON</button>
+    <div data-shape="ClassShape" class="draw2d_droppable ui-draggable">Class</div>
+    <div data-shape="PackageShape" class="draw2d_droppable ui-draggable">Package</div>
 </div>
 <div id="gfx_holder"
      style="width: 1500px; height: 1500px; cursor: default; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
@@ -131,7 +136,7 @@
     var project = $.urlParam('project');
     var model = $.urlParam('model');
 
-    var canvas = new draw2d.Canvas("gfx_holder");
+    var canvas = new View("gfx_holder");
 
     canvas.installEditPolicy(new draw2d.policy.canvas.SnapToCenterEditPolicy);
     canvas.installEditPolicy(new draw2d.policy.canvas.SnapToGeometryEditPolicy);
