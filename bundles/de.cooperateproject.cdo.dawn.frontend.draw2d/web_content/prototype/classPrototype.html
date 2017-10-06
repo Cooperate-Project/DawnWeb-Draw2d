@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Draw2d - Label View 4 testing</title>
+    <title>Draw2d - Prototype testing</title>
+    <link rel="stylesheet" href="../css/contextmenu.css">
 
+    <!-- Third Party Libraries -->
     <script src="../bower_components/jquery/jquery.min.js"></script>
     <script src="../bower_components/draw2d/dist/pathfinding-browser.min.js"></script>
     <script src="../bower_components/draw2d/dist/json2.js"></script>
@@ -16,17 +18,15 @@
     <script src="../bower_components/draw2d/dist/patched_raphael.js"></script>
     <script src="../bower_components/shifty/dist/shifty.min.js"></script>
     <script src="../bower_components/draw2d/dist/draw2d.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.js"></script>
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+    <!-- Own libraries -->
     <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/lib/swagger-client.js"></script>
     <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/dawnweb.js"></script>
     <script src="../../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/consts.js"></script>
+    <script src="../js/draw2dUtils.js"></script>
 
-    <script src="../shapes/testShape.js"></script>
-    <script src="../shapes/TableShape.js"></script>
-    <script src="../shapes/LegacyClassShape.js"></script>
-
+    <!-- Custom shapes -->
     <script src="../shapes/ListCompartment.js"></script>
     <script src="../shapes/AttributeCompartment.js"></script>
     <script src="../shapes/OperationCompartment.js"></script>
@@ -37,12 +37,12 @@
     <script src="../shapes/View.js"></script>
 
     <script type="text/javascript">
-    //DawnWeb.init();
+        DawnWeb.init();
     </script>
 
-    <link rel="stylesheet" href="../css/contextmenu.css">
-
 </head>
+
+
 <body>
 <div id="button">
     <button onclick="writeJSON()">Write JSON</button>
@@ -55,21 +55,14 @@
 </div>
 <script type="text/javascript">
 
+    var canvas = new View("gfx_holder");
     var docJson = "";
 
     function writeJSON() {
         console.log("Writing JSON...");
 
-        // Insert parent information (for z order)
-        setParentInformation();
-
-        // Write JSON
-        var writer = new draw2d.io.json.Writer();
-        writer.marshal(canvas, function (json) {
-
-            console.log(json);
-            docJson = json;
-        });
+        docJson = Draw2dUtils.getJson(canvas);
+        console.log(docJson);
 
         canvas.clear();
     }
@@ -77,77 +70,9 @@
     function readJSON() {
         console.log("Reading JSON...");
 
-        // Read JSON
-        var reader = new draw2d.io.json.Reader();
-        reader.unmarshal(canvas, docJson);
-
-        // Fix z order
-        $.each(docJson, function (i, o) {
-            moveParentsBack(canvas.getFigure(o.id));
-        });
+        Draw2dUtils.setJSON(canvas, docJson);
 
     }
-
-    function moveParentsBack(figure) {
-        if (figure != null) {
-            figure.toBack();
-            console.log("Moved back:" + figure.getName());
-
-            if (figure.parentFigure != null) {
-                moveParentsBack(canvas.getFigure(figure.parentFigure));
-            }
-        }
-    }
-
-    function setParentInformation() {
-        var figures = canvas.getFigures().data;
-        $.each(figures, function (i, p) {
-            if (p.NAME == "PackageShape") {
-                $.each(p.getAboardFigures(true).data, function (i, o) {
-                        canvas.getFigure(o.getId()).parentFigure = p.getId();
-                    }
-                );
-            }
-        });
-    }
-
-    $.urlParam = function (name) {
-        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        if (results == null) {
-            return null;
-        }
-        else {
-            return decodeURI(results[1]) || 0;
-        }
-    };
-
-    $.reduce = function (obj1, obj2) {
-        for (var k in obj2) {
-            if (obj1.hasOwnProperty(k) && obj2.hasOwnProperty(k)) {
-                if (typeof obj1[k] == "object" && typeof obj2[k == "object"]) {
-                    $.reduce(obj1[k], obj2[k]);
-                } else {
-                    delete obj1[k];
-                }
-            }
-        }
-    };
-
-    var project = $.urlParam('project');
-    var model = $.urlParam('model');
-
-    var canvas = new View("gfx_holder");
-
-    canvas.installEditPolicy(new draw2d.policy.canvas.SnapToCenterEditPolicy);
-    canvas.installEditPolicy(new draw2d.policy.canvas.SnapToGeometryEditPolicy);
-    canvas.installEditPolicy(new draw2d.policy.canvas.SnapToInBetweenEditPolicy);
-
-    canvas.installEditPolicy(new draw2d.policy.canvas.FadeoutDecorationPolicy());
-    canvas.installEditPolicy(new draw2d.policy.connection.DragConnectionCreatePolicy({
-        createConnection: function () {
-            return new RichConnection();
-        }
-    }));
 
     // Package A
     var pgA = new PackageShape({

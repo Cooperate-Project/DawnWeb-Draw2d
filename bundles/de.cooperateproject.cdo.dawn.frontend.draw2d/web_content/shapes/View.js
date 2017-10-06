@@ -4,6 +4,17 @@ View = draw2d.Canvas.extend({
     {
         this._super(id);
 
+        this.installEditPolicy(new draw2d.policy.canvas.SnapToCenterEditPolicy);
+        this.installEditPolicy(new draw2d.policy.canvas.SnapToGeometryEditPolicy);
+        this.installEditPolicy(new draw2d.policy.canvas.SnapToInBetweenEditPolicy);
+
+        this.installEditPolicy(new draw2d.policy.canvas.FadeoutDecorationPolicy());
+        this.installEditPolicy(new draw2d.policy.connection.DragConnectionCreatePolicy({
+            createConnection: function () {
+                return new RichConnection();
+            }
+        }));
+
     },
 
     onDrop : function(droppedDomNode, x, y, shiftKey, ctrlKey)
