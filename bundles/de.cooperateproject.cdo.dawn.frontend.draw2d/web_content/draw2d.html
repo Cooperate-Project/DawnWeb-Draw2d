@@ -2,9 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>Draw2D Dawn Web Viewer</title>
 
+    <link rel="stylesheet" href="css/contextmenu.css">
+    <link rel="stylesheet" href="css/Draw2dViewer.css">
+
+    <!-- Third Party Libraries -->
+    <script src="bower_components/draw2d/dist/pathfinding-browser.min.js"></script>
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/draw2d/dist/json2.js"></script>
+    <script src="bower_components/draw2d/dist/patched_Class.js"></script>
+    <script src="bower_components/draw2d/dist/patched_canvg.js"></script>
+    <script src="bower_components/draw2d/dist/rgbcolor.js"></script>
+    <script src="bower_components/draw2d/dist/jquery.contextmenu.js"></script>
+    <script src="bower_components/draw2d/dist/jquery-touch_punch.js"></script>
+    <script src="bower_components/draw2d/dist/jquery.autoresize.js"></script>
+    <script src="bower_components/draw2d/dist/patched_raphael.js"></script>
+    <script src="bower_components/shifty/dist/shifty.min.js"></script>
+    <script src="bower_components/draw2d/dist/draw2d.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Own libraries -->
+    <script src="../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/lib/swagger-client.js"></script>
+    <script src="../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/dawnweb.js"></script>
+    <script src="../../../../DawnWeb/bundles/de.cooperateproject.cdo.dawn.frontend.lib/web_content/api/consts.js"></script>
+
+    <script src="js/draw2dUtils.js"></script>
+    <script src="js/Draw2dViewer.js"></script>
+
+    <!-- Custom shapes -->
+    <script src="shapes/ListCompartment.js"></script>
+    <script src="shapes/AttributeCompartment.js"></script>
+    <script src="shapes/OperationCompartment.js"></script>
+    <script src="shapes/ClassShape.js"></script>
+    <script src="shapes/RichConnection.js"></script>
+    <script src="shapes/SimpleArrowDecorator.js"></script>
+    <script src="shapes/PackageShape.js"></script>
+    <script src="shapes/View.js"></script>
+
+    <script type="text/javascript">
+        DawnWeb.init();
+    </script>
+</head>
+
+<body id="container">
+
+<div id="side-nav">
+    <span id="logo">Draw2D Dawn Web Viewer</span>
+    <div id="info">
+        <div>Connected: <span id="serverconnect" class="boldred">FALSE</span></div>
+        <div id="metainfo">
+            Project: <span id="projectinfo"></span><br>
+            Model: <span id="modelinfo"></span>
+        </div>
+    </div>
+    <div id="layer_elements">
+        <div id="layer_header" class="highlight panetitle blackgradient">
+            <div data-shape="ClassShape" class="palette_node_element draw2d_droppable ui-draggable" id="dropClass"
+                 title="drag&amp;drop the icon into the canvas.."></div>
+            <div data-shape="PackageShape" class="palette_node_element draw2d_droppable ui-draggable" id="dropPackage"
+                 title="drag&amp;drop the icon into the canvas.."></div>
+        </div>
+    </div>
+</div>
+<div id="canvas"
+     style="width: 1500px; height: 1500px; cursor: default; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</div>
 </body>
+<script>
+    Draw2DViewer.init();
+</script>
 </html>

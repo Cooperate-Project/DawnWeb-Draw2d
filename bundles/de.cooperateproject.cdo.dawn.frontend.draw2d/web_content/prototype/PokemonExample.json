@@ -1,0 +1,115 @@
+[
+  {
+    "type": "ClassShape",
+    "x": 396.3203125,
+    "y": 472,
+    "id": "7106b94b-7839-90ac-f76f-48dc5e366f52",
+    "name": "Pikachu",
+    "attributeCompartment": {
+      "attributes": [
+        {
+          "text": "number: Int",
+          "id": "196ddf10-5d06-2729-a7d0-cab73ae79dcd"
+        }
+      ]
+    },
+    "operationCompartment": {
+      "operations": [
+        {
+          "text": "sayName(): void",
+          "id": "078b62c7-704a-cc34-e0fd-4507229cb9f4"
+        },
+        {
+          "text": "attack(): Boolean",
+          "id": "5cfd1cf9-961a-688d-f71d-45cc76d6e05a"
+        }
+      ]
+    }
+  },
+  {
+    "type": "ClassShape",
+    "x": 472.6796875,
+    "y": 301.484375,
+    "id": "777eb8c1-df67-903d-d20d-a00518d2fd50",
+    "name": "Pokemon",
+    "attributeCompartment": {
+      "attributes": [
+        {
+          "text": "number: Int",
+          "id": "8f19b87d-addf-6db0-eb89-9981788a536c"
+        }
+      ]
+    },
+    "operationCompartment": {
+      "operations": [
+        {
+          "text": "sayName(): void",
+          "id": "ff15cfa8-e85f-6857-752e-4099f899f5e5"
+        }
+      ]
+    }
+  },
+  {
+    "type": "PackageShape",
+    "x": 444.6796875,
+    "y": 34,
+    "id": "1421e00b-30d4-2a09-2e6e-a349fe11423b",
+    "height": 128,
+    "width": 154,
+    "aboardedFigures": {
+      "data": [
+        "586e67ba-bac8-d550-89ae-86d53880ceab"
+      ]
+    },
+    "name": "Utilities"
+  },
+  {
+    "type": "ClassShape",
+    "x": 472.6796875,
+    "y": 56,
+    "id": "586e67ba-bac8-d550-89ae-86d53880ceab",
+    "parentFigure": "1421e00b-30d4-2a09-2e6e-a349fe11423b",
+    "name": "Health Potion",
+    "attributeCompartment": {
+      "attributes": [
+        {
+          "text": "strenght: Int",
+          "id": "cc04f8e0-d9ff-1013-a3e4-f4d2e09ed108"
+        }
+      ]
+    },
+    "operationCompartment": {
+      "operations": []
+    }
+  },
+  {
+    "type": "RichConnection",
+    "id": "874bbfdb-d333-1095-22dc-fa065f9f4b77",
+    "source": {
+      "node": "586e67ba-bac8-d550-89ae-86d53880ceab",
+      "port": "port_586e67ba-bac8-d550-89ae-86d53880ceab"
+    },
+    "target": {
+      "node": "777eb8c1-df67-903d-d20d-a00518d2fd50",
+      "port": "port_777eb8c1-df67-903d-d20d-a00518d2fd50"
+    },
+    "labelText": "accepts",
+    "decorationType": "connection",
+    "directionSourceToTarget": true
+  },
+  {
+    "type": "RichConnection",
+    "id": "0ea9b0cf-2fa4-a285-d733-4279578d3e3b",
+    "source": {
+      "node": "7106b94b-7839-90ac-f76f-48dc5e366f52",
+      "port": "port_7106b94b-7839-90ac-f76f-48dc5e366f52"
+    },
+    "target": {
+      "node": "777eb8c1-df67-903d-d20d-a00518d2fd50",
+      "port": "port_777eb8c1-df67-903d-d20d-a00518d2fd50"
+    },
+    "labelText": "",
+    "decorationType": "inheritance",
+    "directionSourceToTarget": true
+  }
+]

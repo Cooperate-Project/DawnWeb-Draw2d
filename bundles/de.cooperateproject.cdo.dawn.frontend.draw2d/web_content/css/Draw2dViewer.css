@@ -1,0 +1,89 @@
+.boldred {
+    font-weight: bold;
+    color: red;
+}
+
+.boldgreen {
+    font-weight: bold;
+    color: green;
+}
+
+body {
+    font-family: sans-serif;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+
+#canvas {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 160px;
+    bottom: 0px;
+    overflow: scroll;
+    background-color: #FFFFFF;
+}
+
+.palette_node_element {
+    border: 1px solid gray;
+    padding: 10px;
+    cursor: move;
+    width: 80px;
+    height: 80px;
+    margin: 30px auto 30px auto;
+    text-align: center;
+    vertical-align: center;
+    align: center;
+    border-radius: 5px;
+    background-size: contain;
+    background-origin: padding-box;
+    background-repeat: no-repeat;
+}
+
+#side-nav {
+    border-right: 1px solid #e0e0e0;
+    bottom: 0;
+    background: #fff;
+    color: #333;
+    display: block;
+    font-family: 'RobotoDraft', sans-serif;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 160px;
+    z-index: 4;
+}
+
+#side-nav #logo {
+    border-bottom: 1px solid #e0e0e0;
+    display: block;
+    height: 75px;
+    margin: auto;
+    padding: 12px 24px 10px 24px;
+    position: relative;
+    font-size: 20px;
+    font-weight: 100;
+    text-align: center;
+}
+
+#side-nav #info {
+    border-bottom: 1px solid #e0e0e0;
+    display: block;
+    height: 50px;
+    margin: auto;
+    padding: 6px 24px 10px 6px;
+    position: relative;
+}
+
+#dropClass {
+    background-image: url("../img/class.png");
+}
+
+#dropPackage {
+    background-image: url("../img/package.png");
+}
