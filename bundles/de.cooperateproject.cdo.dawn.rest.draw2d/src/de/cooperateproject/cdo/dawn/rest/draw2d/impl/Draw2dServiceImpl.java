@@ -15,6 +15,7 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 
 import de.cooperateproject.cdo.dawn.rest.api.DiagramService;
 import de.cooperateproject.cdo.dawn.rest.draw2d.api.Draw2dService;
+import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ClassShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.Draw2dLabel;
 import de.cooperateproject.cdo.dawn.rest.draw2d.util.Draw2dConverter;
 import de.cooperateproject.cdo.dawn.rest.util.ServiceFactory;
@@ -44,15 +45,25 @@ public class Draw2dServiceImpl implements Draw2dService {
 	@Override
 	@POST
 	@Path("/update/{projectId}/{modelId}")
-	//@Consumes(MediaType.APPLICATION_JSON)
+	// @Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Updates diagrams with data from draw2d labels")
 	public boolean setLabelsAsClasses(@FormParam("labels") String labels, @PathParam("projectId") String projectId,
 			@PathParam("modelId") String modelId) {
-		
+
 		System.out.println(labels);
-		
+
 		// TODO: Implement?
 		return false;
+	}
+
+	@Override
+	@GET
+	@Path("/classes/{projectId}/{modelId}")
+	@ApiOperation(value = "Returns diagram classes as draw2d ClassShapes.", response = ClassShape.class, responseContainer = "List")
+	public Collection<ClassShape> getClasses(@PathParam("projectId") String projectId,
+			@PathParam("modelId") String modelId) {
+		Diagram diagram = getDiagram(projectId, modelId);
+		return Draw2dConverter.diagram2classes(diagram);
 	}
 
 }

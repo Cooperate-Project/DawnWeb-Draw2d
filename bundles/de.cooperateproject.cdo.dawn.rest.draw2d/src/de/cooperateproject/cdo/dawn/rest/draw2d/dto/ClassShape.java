@@ -11,12 +11,14 @@ public class ClassShape {
 	private OperationCompartment operationCompartment;
 	private String parentFigure;
 
-	public String getType() {
-		return type;
+	public ClassShape() {
+		this.type = "ClassShape";
+		this.attributeCompartment = new AttributeCompartment();
+		this.operationCompartment = new OperationCompartment();
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public String getType() {
+		return type;
 	}
 
 	public int getX() {

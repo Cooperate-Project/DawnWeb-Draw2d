@@ -22,7 +22,7 @@ var Draw2dUtils = {
 
         // Fix z order by recursively moving parent figures backwards
         $.each(json, function (i, o) {
-            Draw2dUtils.moveParentsBack(canvas.getFigure(o.id));
+            Draw2dUtils.moveParentsBack(view.getFigure(o.id), view);
         });
     },
 
@@ -38,12 +38,12 @@ var Draw2dUtils = {
         });
     },
 
-    moveParentsBack: function (figure) {
+    moveParentsBack: function (figure, view) {
         if (figure != null) {
             figure.toBack();
 
             if (figure.parentFigure != null) {
-                Draw2dUtils.moveParentsBack(canvas.getFigure(figure.parentFigure));
+                Draw2dUtils.moveParentsBack(view.getFigure(figure.parentFigure));
             }
         }
     }

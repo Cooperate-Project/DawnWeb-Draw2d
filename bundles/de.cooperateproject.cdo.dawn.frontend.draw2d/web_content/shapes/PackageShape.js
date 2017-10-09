@@ -73,7 +73,7 @@ PackageShape = draw2d.shape.composite.Raft.extend({
         memento.parentFigure = this.parentFigure;
 
         // Add ids of child figures
-        memento.aboardedFigures = this.getAboardFigures(true).map(function (fig) {
+        memento.aboardFigures = this.getAboardFigures(true).map(function (fig) {
             return fig.getId();
         });
 
