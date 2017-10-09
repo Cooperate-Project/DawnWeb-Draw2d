@@ -17,6 +17,7 @@ import de.cooperateproject.cdo.dawn.rest.api.DiagramService;
 import de.cooperateproject.cdo.dawn.rest.draw2d.api.Draw2dService;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ClassShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.Draw2dLabel;
+import de.cooperateproject.cdo.dawn.rest.draw2d.dto.PackageShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.util.Draw2dConverter;
 import de.cooperateproject.cdo.dawn.rest.util.ServiceFactory;
 import io.swagger.annotations.Api;
@@ -64,6 +65,16 @@ public class Draw2dServiceImpl implements Draw2dService {
 			@PathParam("modelId") String modelId) {
 		Diagram diagram = getDiagram(projectId, modelId);
 		return Draw2dConverter.diagram2classes(diagram);
+	}
+
+	@Override
+	@GET
+	@Path("/packages/{projectId}/{modelId}")
+	@ApiOperation(value = "Returns diagram packages as draw2d PackageShapes.", response = PackageShape.class, responseContainer = "List")
+	public Collection<PackageShape> getPackages(@PathParam("projectId") String projectId,
+			@PathParam("modelId") String modelId) {
+		Diagram diagram = getDiagram(projectId, modelId);
+		return Draw2dConverter.diagram2packages(diagram);
 	}
 
 }

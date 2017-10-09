@@ -12,7 +12,7 @@ var Draw2DViewer = {
         // Get initial json
         var _viewer = this;
         DawnWeb.getClient().then(function (server) {
-            return server.apis.draw2d.getClasses({projectId: _viewer.project, modelId: _viewer.model});
+            return server.apis.draw2d.getPackages({projectId: _viewer.project, modelId: _viewer.model});
         })
             .then(function (result) {
 
@@ -22,6 +22,17 @@ var Draw2DViewer = {
                 // Insert json
                 console.log(result.obj);
                 Draw2dUtils.setJSON(_viewer.canvas, result.obj);
+
+                // Get classes now
+                DawnWeb.getClient().then(function (server) {
+                    return server.apis.draw2d.getClasses({projectId: _viewer.project, modelId: _viewer.model});
+                })
+                    .then(function (result) {
+                        // Insert json
+                        console.log(result.obj);
+                        Draw2dUtils.setJSON(_viewer.canvas, result.obj);
+                    });
             });
+
     }
 }

@@ -16,6 +16,7 @@ import org.eclipse.uml2.uml.Property;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ClassShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.Draw2dLabel;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ListEntry;
+import de.cooperateproject.cdo.dawn.rest.draw2d.dto.PackageShape;
 import de.cooperateproject.cdo.dawn.rest.util.DawnWebUtil;
 
 public class Draw2dConverter {
@@ -80,7 +81,6 @@ public class Draw2dConverter {
 
 		// Attributes
 		for (Property attribute : clazz.getAttributes()) {
-			System.out.println(attribute);
 			ListEntry entry = new ListEntry();
 			String name = attribute.getName();
 			String type = (attribute.getType() == null) ? "" : attribute.getType().getName();
@@ -103,6 +103,65 @@ public class Draw2dConverter {
 		}
 
 		return classShape;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Collection<PackageShape> diagram2packages(Diagram diagram) {
+		return elements2packages(diagram.getChildren(), 0, 0);
+	}
+
+	private static Collection<PackageShape> elements2packages(Collection<Object> elements, int baseX, int baseY) {
+		ArrayList<PackageShape> packages = new ArrayList<PackageShape>();
+
+		for (Object o : elements) {
+			if (o instanceof Node) {
+				if (((Node) o).getElement() instanceof Package) {
+
+					packages.add(node2package((Node) o, baseX, baseY));
+
+					LayoutConstraint l = ((Node) o).getLayoutConstraint();
+					if (l instanceof Location) {
+						baseX = baseX + ((Location) l).getX();
+						baseY = baseY + ((Location) l).getY();
+
+						// FIXME: Nested packages are really weird... not supported right now.
+						//Package pg = (Package) ((Node) o).getElement();
+						//Collection<Package> nestedPackages = pg.getNestedPackages();
+					}
+				}
+			}
+		}
+
+		return packages;
+	}
+
+	private static PackageShape node2package(Node node, int baseX, int baseY) {
+
+		PackageShape packageShape = new PackageShape();
+
+		// ID
+		packageShape.setId(DawnWebUtil.getUniqueId(node));
+
+		// Location
+		LayoutConstraint l = node.getLayoutConstraint();
+		if (l instanceof Location) {
+			packageShape.setX(((Location) l).getX() + baseX);
+			packageShape.setY(((Location) l).getY() + baseY);
+		}
+
+		// Name
+		Package pg = (Package) node.getElement();
+		packageShape.setName(pg.getName());
+
+		// Size
+		if (l instanceof Size) {
+			packageShape.setWeight(((Size) l).getWidth());
+			packageShape.setHeight(((Size) l).getHeight());
+		}
+
+		// TODO: Height, Weight, aboardFigures, parentFigure
+
+		return packageShape;
 	}
 
 	public static Collection<Draw2dLabel> diagram2labels(Diagram diagram) {
