@@ -10,6 +10,7 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.Size;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Property;
 
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ClassShape;
@@ -19,25 +20,47 @@ import de.cooperateproject.cdo.dawn.rest.util.DawnWebUtil;
 
 public class Draw2dConverter {
 
+	@SuppressWarnings("unchecked")
 	public static Collection<ClassShape> diagram2classes(Diagram diagram) {
+
+		// TODO: Test parent figure
+		// TODO: Implement package + connection (edges)
+
+		return elements2classes(diagram.getChildren(), 0, 0);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Collection<ClassShape> elements2classes(Collection<Object> elements, int baseX, int baseY) {
 
 		ArrayList<ClassShape> classes = new ArrayList<ClassShape>();
 
-		for (Object o : diagram.getChildren()) {
+		for (Object o : elements) {
+			if (o instanceof Node) {
 
-			// Check if object is instanceOf Class
-			// TODO: Encapsulated classes
-			// TODO: Test parent figure
-			// TODO: Implement package + connection (edges)
-			if (o instanceof Node && ((Node) o).getElement() instanceof Class) {
-				classes.add(node2class((Node) o));
+				// Add class
+				if (((Node) o).getElement() instanceof Class) {
+					classes.add(node2class((Node) o, baseX, baseY));
+
+					// Add all child classes if package
+				} else if (((Node) o).getElement() instanceof Package) {
+
+					// Use package location, as class location is package
+					// relative
+					LayoutConstraint l = ((Node) o).getLayoutConstraint();
+					if (l instanceof Location) {
+						baseX = baseX + ((Location) l).getX();
+						baseY = baseY + ((Location) l).getY();
+						classes.addAll(elements2classes(((Node) o).getChildren(), baseX, baseY));
+					}
+				}
 			}
 		}
 
 		return classes;
 	}
 
-	private static ClassShape node2class(Node node) {
+	private static ClassShape node2class(Node node, int baseX, int baseY) {
 
 		ClassShape classShape = new ClassShape();
 
@@ -47,8 +70,8 @@ public class Draw2dConverter {
 		// Location
 		LayoutConstraint l = node.getLayoutConstraint();
 		if (l instanceof Location) {
-			classShape.setX(((Location) l).getX());
-			classShape.setY(((Location) l).getY());
+			classShape.setX(((Location) l).getX() + baseX);
+			classShape.setY(((Location) l).getY() + baseY);
 		}
 
 		// Name
@@ -75,7 +98,7 @@ public class Draw2dConverter {
 		}
 
 		// Parent figure
-		if(node.eContainer() != null) {
+		if (node.eContainer() != null) {
 			classShape.setParentFigure(DawnWebUtil.getUniqueId(node.eContainer()));
 		}
 
