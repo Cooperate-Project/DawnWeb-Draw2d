@@ -22,7 +22,8 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         // TODO: Remove prototype implementation
         this.classLabel.installEditor(new draw2d.ui.LabelInplaceEditor({
             onCommit: $.proxy(function (value) {
-                Draw2DViewer.changeName(_table.getId(), value);
+                if (legacyMode == false)
+                    Draw2DViewer.changeName(_table.getId(), value);
             }, this),
             onCancel: function () {
             }

@@ -15,7 +15,6 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Property;
 
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ClassShape;
-import de.cooperateproject.cdo.dawn.rest.draw2d.dto.Draw2dLabel;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ListEntry;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.PackageShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.RichConnection;
@@ -196,17 +195,17 @@ public class Draw2dConverter {
 	private static RichConnection edge2connection(Connector edge) {
 
 		RichConnection connection = new RichConnection();
-		
+
 		// Ends
 		connection.getSource().setNode(DawnWebUtil.getUniqueId(edge.getSource()));
 		connection.getTarget().setNode(DawnWebUtil.getUniqueId(edge.getTarget()));
 		connection.setDirectionSourceToTarget(true);
-		
+
 		// Connection type
 		// TODO: Richer support for connection types
-		
-		switch(edge.getType()) {
-		
+
+		switch (edge.getType()) {
+
 		case "Generalization_Edge":
 			connection.setDecorationType("inheritance");
 			break;
@@ -223,58 +222,11 @@ public class Draw2dConverter {
 			connection.setDecorationType("connection");
 			break;
 		}
-		
+
 		// TODO: Label
 		connection.setLabelText("");
 
 		return connection;
-	}
-
-	public static Collection<Draw2dLabel> diagram2labels(Diagram diagram) {
-
-		ArrayList<Draw2dLabel> labels = new ArrayList<Draw2dLabel>();
-
-		for (Object o : diagram.getChildren()) {
-
-			// TODO: Separate types from structure, more abstract
-			if (o instanceof Node) {
-				Draw2dLabel label = new Draw2dLabel();
-
-				// Id
-				Node node = (Node) o;
-				label.setId(DawnWebUtil.getUniqueId(node));
-
-				// X, Y
-				LayoutConstraint l = node.getLayoutConstraint();
-				if (l instanceof Location) {
-					label.setX(((Location) l).getX());
-					label.setY(((Location) l).getY());
-				}
-
-				// Size
-				// FIXME: Default values are -1, calculate own values
-				if (l instanceof Size) {
-					// label.setWeight(((Size) l).getWidth());
-					// label.setHeight(((Size) l).getHeight());
-					label.setWeight(100);
-					label.setHeight(40);
-				}
-
-				// Text
-				if (node.getElement() instanceof org.eclipse.uml2.uml.NamedElement) {
-					org.eclipse.uml2.uml.NamedElement clazz = (org.eclipse.uml2.uml.NamedElement) node.getElement();
-					label.setText(clazz.getName());
-				}
-				if (node.getElement() instanceof org.eclipse.uml2.uml.Package) {
-					label.setText(String.format("[%s]", label.getText()));
-				}
-
-				labels.add(label);
-			}
-
-		}
-
-		return labels;
 	}
 
 }

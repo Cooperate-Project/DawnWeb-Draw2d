@@ -70,6 +70,7 @@
     <script src="../shapes/View.js"></script>
 
     <script type="text/javascript">
+        var legacyMode = true;
         DawnWeb.init();
     </script>
 </head>
@@ -94,7 +95,7 @@
 </div>
 <script type="text/javascript">
 
-    var canvas = new View("gfx_holder");
+    var canvas = new View("gfx_holder", true);
 
     function writeJSON() {
         console.log("Writing JSON...");

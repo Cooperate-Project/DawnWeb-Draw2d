@@ -1,7 +1,8 @@
 View = draw2d.Canvas.extend({
 
-    init: function (id) {
+    init: function (id, legacyMode) {
         this._super(id);
+        this.legacyMode = legacyMode;
 
         // Policies to show lines
         this.installEditPolicy(new draw2d.policy.canvas.SnapToCenterEditPolicy);
@@ -24,7 +25,7 @@ View = draw2d.Canvas.extend({
         var figure = eval("new " + type + "();");
 
         // TODO: Remove prototype implementation
-        if (type == "ClassShape") {
+        if (type == "ClassShape" && !this.legacyMode) {
             Draw2DViewer.createNewClass("New Class", x, y);
         }
 
