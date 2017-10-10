@@ -6,7 +6,7 @@ PackageShape = draw2d.shape.composite.Raft.extend({
         this._super(attr);
 
         this.packageLabel = new draw2d.shape.basic.Label({
-            text: "Package",
+            text: "New Package",
             stroke: 1,
             fontColor: "#000000",
             bgColor: "#f7f7f7",

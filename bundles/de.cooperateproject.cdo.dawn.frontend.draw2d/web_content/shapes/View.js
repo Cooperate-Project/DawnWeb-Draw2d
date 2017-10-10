@@ -23,6 +23,11 @@ View = draw2d.Canvas.extend({
         var type = $(droppedDomNode).data("shape");
         var figure = eval("new " + type + "();");
 
+        // TODO: Remove prototype implementation
+        if (type == "ClassShape") {
+            Draw2DViewer.createNewClass("New Class", x, y);
+        }
+
         // create a command for the undo/redo support
         var command = new draw2d.command.CommandAdd(this, figure, x, y);
         this.getCommandStack().execute(command);

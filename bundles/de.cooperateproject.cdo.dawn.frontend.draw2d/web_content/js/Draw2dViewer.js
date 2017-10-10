@@ -4,6 +4,7 @@ var Draw2DViewer = {
         // Fill meta info
         this.project = $.urlParam('project');
         this.model = $.urlParam('model');
+        this.lastChanged = 0;
         $("#projectinfo").html(this.project);
         $("#modelinfo").html(this.model);
 
@@ -44,9 +45,81 @@ var Draw2DViewer = {
                                 console.log(result.obj);
                                 Draw2dUtils.setJSON(_viewer.canvas, result.obj);
 
+                                // Get initial timestamp
+                                DawnWeb.getClient().then(function (server) {
+                                    return server.apis.diagram.getLastChanged({
+                                        projectId: _viewer.project,
+                                        modelId: _viewer.model
+                                    });
+                                })
+                                    .then(function (result) {
+
+                                        _viewer.lastChanged = result.text;
+
+                                        // Start auto refreshing
+                                        window.setInterval(function () {
+                                            _viewer.refreshDiagramData();
+                                        }, 500);
+
+                                    });
+
+
                             });
                     });
             });
 
+    },
+
+    refreshDiagramData: function () {
+        var _viewer = this;
+        if (this.project != undefined && this.model != undefined) {
+            _viewer.getVersionFromProject().then(function (result) {
+
+                if (_viewer.lastChanged != result.text) {
+                    _viewer.lastChanged = result.text;
+
+                    _viewer.changeStatus('The resource has changed by another user. Please reload the window to apply the changes.');
+
+                }
+
+            });
+        }
+    },
+
+    getVersionFromProject: function () {
+        var _viewer = this;
+        return DawnWeb.getClient().then(function (server) {
+            return server.apis.diagram.getLastChanged({projectId: _viewer.project, modelId: _viewer.model});
+        });
+    },
+
+    changeStatus: function (status) {
+        $("#statusInfo").html(status);
+    },
+
+    createNewClass: function (className, x, y) {
+        var _viewer = this;
+        return DawnWeb.getClient().then(function (server) {
+            return server.apis.diagram.addClass({
+                projectId: _viewer.project,
+                modelId: _viewer.model,
+                className: className,
+                x: x,
+                y: y
+            });
+        });
+    },
+
+    changeName: function (uuid, value) {
+        var _viewer = this;
+        return DawnWeb.getClient().then(function (server) {
+            return server.apis.diagram.changeFeature({
+                projectId: _viewer.project,
+                modelId: _viewer.model,
+                uuid: uuid,
+                featureId: 5,
+                value: value
+            });
+        });
     }
 }

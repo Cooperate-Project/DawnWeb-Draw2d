@@ -8,20 +8,29 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
         this._super($.extend({bgColor: "#ffffff", color: "#000000", stroke: 1, radius: 0}, attr));
 
         this.classLabel = new draw2d.shape.basic.Label({
-            text: "Class",
+            text: "New Class",
             stroke: 1,
             fontColor: "#000000",
             bgColor: "#f7f7f7",
             radius: this.getRadius(),
             padding: 5,
-            resizeable: true,
-            editor: new draw2d.ui.LabelInplaceEditor()
+            resizeable: true
         });
+
+        var _table = this;
+
+        // TODO: Remove prototype implementation
+        this.classLabel.installEditor(new draw2d.ui.LabelInplaceEditor({
+            onCommit: $.proxy(function (value) {
+                Draw2DViewer.changeName(_table.getId(), value);
+            }, this),
+            onCancel: function () {
+            }
+        }));
 
         this.attributeCompartment = new AttributeCompartment();
         this.operationCompartment = new OperationCompartment();
 
-        var _table = this;
         this.classLabel.on("contextmenu", function (emitter, event) {
             $.contextMenu({
                 selector: 'body',

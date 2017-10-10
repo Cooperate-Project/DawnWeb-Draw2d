@@ -80,6 +80,14 @@ body {
     position: relative;
 }
 
+#side-nav #statusInfo {
+    border-top: 1px solid #e0e0e0;
+    margin: auto;
+    padding: 6px 24px 10px 6px;
+    display: block;
+    color: red;
+}
+
 #dropClass {
     background-image: url("../img/class.png");
 }
