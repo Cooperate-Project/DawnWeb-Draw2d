@@ -3,6 +3,7 @@ package de.cooperateproject.cdo.dawn.rest.draw2d.util;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.gmf.runtime.notation.Connector;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.LayoutConstraint;
 import org.eclipse.gmf.runtime.notation.Location;
@@ -17,6 +18,7 @@ import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ClassShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.Draw2dLabel;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ListEntry;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.PackageShape;
+import de.cooperateproject.cdo.dawn.rest.draw2d.dto.RichConnection;
 import de.cooperateproject.cdo.dawn.rest.util.DawnWebUtil;
 
 public class Draw2dConverter {
@@ -52,6 +54,9 @@ public class Draw2dConverter {
 					if (l instanceof Location) {
 						baseX = baseX + ((Location) l).getX();
 						baseY = baseY + ((Location) l).getY();
+
+						// FIXME: getChildren() is not the correct method,
+						// create wrong relations
 						classes.addAll(elements2classes(((Node) o).getChildren(), baseX, baseY));
 					}
 				}
@@ -65,6 +70,12 @@ public class Draw2dConverter {
 
 		ClassShape classShape = new ClassShape();
 
+		// Current fix: Reset base-values when not in a package
+		if (node.eContainer() instanceof Diagram) {
+			baseX = 0;
+			baseY = 0;
+		}
+
 		// ID
 		classShape.setId(DawnWebUtil.getUniqueId(node));
 
@@ -77,7 +88,8 @@ public class Draw2dConverter {
 
 		// Name
 		Class clazz = (Class) node.getElement();
-		classShape.setName(clazz.getName());
+		String className = clazz.getName();
+		classShape.setName(className);
 
 		// Attributes
 		for (Property attribute : clazz.getAttributes()) {
@@ -98,8 +110,8 @@ public class Draw2dConverter {
 		}
 
 		// Parent figure
-		if (node.eContainer() != null) {
-			classShape.setParentFigure(DawnWebUtil.getUniqueId(node.eContainer()));
+		if (node.eContainer() != null && !(node.eContainer() instanceof Diagram)) {
+			classShape.setParentFigure(DawnWebUtil.getUniqueId(node.eContainer().eContainer()));
 		}
 
 		return classShape;
@@ -124,9 +136,7 @@ public class Draw2dConverter {
 						baseX = baseX + ((Location) l).getX();
 						baseY = baseY + ((Location) l).getY();
 
-						// FIXME: Nested packages are really weird... not supported right now.
-						//Package pg = (Package) ((Node) o).getElement();
-						//Collection<Package> nestedPackages = pg.getNestedPackages();
+						// TODO: Iterate over nested packages
 					}
 				}
 			}
@@ -159,9 +169,65 @@ public class Draw2dConverter {
 			packageShape.setHeight(((Size) l).getHeight());
 		}
 
-		// TODO: Height, Weight, aboardFigures, parentFigure
+		// TODO: aboardFigures
+
+		// Parent figure
+		if (node.eContainer() != null && !(node.eContainer() instanceof Diagram)) {
+			packageShape.setParentFigure(DawnWebUtil.getUniqueId(node.eContainer()));
+		}
 
 		return packageShape;
+	}
+
+	public static Collection<RichConnection> diagram2connections(Diagram diagram) {
+
+		ArrayList<RichConnection> connections = new ArrayList<RichConnection>();
+
+		@SuppressWarnings("unchecked")
+		Collection<Connector> edges = diagram.getEdges();
+
+		for (Connector edge : edges) {
+			connections.add(edge2connection(edge));
+		}
+
+		return connections;
+	}
+
+	private static RichConnection edge2connection(Connector edge) {
+
+		RichConnection connection = new RichConnection();
+		
+		// Ends
+		connection.getSource().setNode(DawnWebUtil.getUniqueId(edge.getSource()));
+		connection.getTarget().setNode(DawnWebUtil.getUniqueId(edge.getTarget()));
+		connection.setDirectionSourceToTarget(true);
+		
+		// Connection type
+		// TODO: Richer support for connection types
+		
+		switch(edge.getType()) {
+		
+		case "Generalization_Edge":
+			connection.setDecorationType("inheritance");
+			break;
+		case "Association_Edge":
+			connection.setDecorationType("association");
+			break;
+		case "Realization_Edge":
+			connection.setDecorationType("realization");
+			break;
+		case "Dependency_Edge":
+			connection.setDecorationType("dependency");
+			break;
+		default:
+			connection.setDecorationType("connection");
+			break;
+		}
+		
+		// TODO: Label
+		connection.setLabelText("");
+
+		return connection;
 	}
 
 	public static Collection<Draw2dLabel> diagram2labels(Diagram diagram) {

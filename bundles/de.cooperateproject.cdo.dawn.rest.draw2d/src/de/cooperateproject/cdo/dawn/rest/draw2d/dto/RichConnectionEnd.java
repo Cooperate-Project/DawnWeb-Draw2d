@@ -11,14 +11,11 @@ public class RichConnectionEnd {
 
 	public void setNode(String node) {
 		this.node = node;
+		this.port = "port_" + node;
 	}
 
 	public String getPort() {
 		return port;
-	}
-
-	public void setPort(String port) {
-		this.port = port;
 	}
 
 }

@@ -12,6 +12,8 @@ public class RichConnection {
 
 	public RichConnection() {
 		type = "RichConnection";
+		source = new RichConnectionEnd();
+		target = new RichConnectionEnd();
 	}
 
 	public String getType() {

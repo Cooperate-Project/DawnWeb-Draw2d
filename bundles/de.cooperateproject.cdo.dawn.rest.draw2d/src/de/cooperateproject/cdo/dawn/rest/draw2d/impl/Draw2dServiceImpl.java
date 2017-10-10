@@ -18,6 +18,7 @@ import de.cooperateproject.cdo.dawn.rest.draw2d.api.Draw2dService;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.ClassShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.Draw2dLabel;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.PackageShape;
+import de.cooperateproject.cdo.dawn.rest.draw2d.dto.RichConnection;
 import de.cooperateproject.cdo.dawn.rest.draw2d.util.Draw2dConverter;
 import de.cooperateproject.cdo.dawn.rest.util.ServiceFactory;
 import io.swagger.annotations.Api;
@@ -75,6 +76,16 @@ public class Draw2dServiceImpl implements Draw2dService {
 			@PathParam("modelId") String modelId) {
 		Diagram diagram = getDiagram(projectId, modelId);
 		return Draw2dConverter.diagram2packages(diagram);
+	}
+
+	@Override
+	@GET
+	@Path("/edges/{projectId}/{modelId}")
+	@ApiOperation(value = "Returns diagram connections as draw2d RichConnections.", response = RichConnection.class, responseContainer = "List")
+	public Collection<RichConnection> getConnections(@PathParam("projectId") String projectId,
+			@PathParam("modelId") String modelId) {
+		Diagram diagram = getDiagram(projectId, modelId);
+		return Draw2dConverter.diagram2connections(diagram);
 	}
 
 }

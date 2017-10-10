@@ -23,7 +23,7 @@ body {
     position: absolute;
     top: 0px;
     right: 0px;
-    left: 160px;
+    left: 250px;
     bottom: 0px;
     overflow: scroll;
     background-color: #FFFFFF;
@@ -55,7 +55,7 @@ body {
     left: 0;
     position: fixed;
     top: 0;
-    width: 160px;
+    width: 250px;
     z-index: 4;
 }
 

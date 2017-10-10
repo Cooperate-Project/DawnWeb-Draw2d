@@ -10,6 +10,7 @@ public class PackageShape {
 	private int height;
 	private int weight;
 	private AboardFigures aboardFigures;
+	private String parentFigure;
 
 	public PackageShape() {
 		type = "PackageShape";
@@ -73,6 +74,14 @@ public class PackageShape {
 
 	public void setAboardFigures(AboardFigures aboardFigures) {
 		this.aboardFigures = aboardFigures;
+	}
+
+	public String getParentFigure() {
+		return parentFigure;
+	}
+
+	public void setParentFigure(String parentFigure) {
+		this.parentFigure = parentFigure;
 	}
 
 }

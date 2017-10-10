@@ -31,6 +31,20 @@ var Draw2DViewer = {
                         // Insert json
                         console.log(result.obj);
                         Draw2dUtils.setJSON(_viewer.canvas, result.obj);
+
+                        // Last: Get connections
+                        DawnWeb.getClient().then(function (server) {
+                            return server.apis.draw2d.getConnections({
+                                projectId: _viewer.project,
+                                modelId: _viewer.model
+                            });
+                        })
+                            .then(function (result) {
+                                // Insert json
+                                console.log(result.obj);
+                                Draw2dUtils.setJSON(_viewer.canvas, result.obj);
+
+                            });
                     });
             });
 
