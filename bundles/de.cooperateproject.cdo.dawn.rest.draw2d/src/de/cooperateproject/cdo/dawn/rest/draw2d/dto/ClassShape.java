@@ -8,7 +8,9 @@ package de.cooperateproject.cdo.dawn.rest.draw2d.dto;
  */
 public class ClassShape {
 
+	// May not be static to get serialized correctly
 	private String type;
+	
 	private int x;
 	private int y;
 	private String id;
@@ -83,7 +85,7 @@ public class ClassShape {
 	}
 
 	/**
-	 * Sets the unique Id of the clas
+	 * Sets the unique Id of the class
 	 * 
 	 * @param id
 	 *            a unique id string
