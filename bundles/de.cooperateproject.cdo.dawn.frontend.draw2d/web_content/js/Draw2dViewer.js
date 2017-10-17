@@ -1,3 +1,7 @@
+/**
+ * The controller of the draw2d graphical editor view.
+ * @type {{init: Draw2DViewer.init, refreshDiagramData: Draw2DViewer.refreshDiagramData, getVersionFromProject: Draw2DViewer.getVersionFromProject, changeStatus: Draw2DViewer.changeStatus, createNewClass: Draw2DViewer.createNewClass, changeName: Draw2DViewer.changeName}}
+ */
 var Draw2DViewer = {
     init: function () {
 
@@ -70,6 +74,9 @@ var Draw2DViewer = {
 
     },
 
+    /**
+     * Check with change timestamp if there is a new version of the diagram on the server.
+     */
     refreshDiagramData: function () {
         var _viewer = this;
         if (this.project != undefined && this.model != undefined) {
@@ -86,6 +93,10 @@ var Draw2DViewer = {
         }
     },
 
+    /**
+     * Returns the last change timestamp.
+     * @returns {*}
+     */
     getVersionFromProject: function () {
         var _viewer = this;
         return DawnWeb.getClient().then(function (server) {
@@ -93,10 +104,21 @@ var Draw2DViewer = {
         });
     },
 
+    /**
+     * Changes the status message.
+     * @param status a status message (html)
+     */
     changeStatus: function (status) {
         $("#statusInfo").html(status);
     },
 
+    /**
+     * Calls the server to create a new class.
+     * @param className the name of the class
+     * @param x absolute x-position
+     * @param y absolute y-position
+     * @returns {*}
+     */
     createNewClass: function (className, x, y) {
         var _viewer = this;
         return DawnWeb.getClient().then(function (server) {
@@ -107,9 +129,16 @@ var Draw2DViewer = {
                 x: x,
                 y: y
             });
+            // FIXME: ID is not correctly synced right now (workaroudn: site must be refreshed after call)
         });
     },
 
+    /**
+     * Changes the name of a class
+     * @param uuid the unique id of the class
+     * @param value the new name
+     * @returns {*}
+     */
     changeName: function (uuid, value) {
         var _viewer = this;
         return DawnWeb.getClient().then(function (server) {

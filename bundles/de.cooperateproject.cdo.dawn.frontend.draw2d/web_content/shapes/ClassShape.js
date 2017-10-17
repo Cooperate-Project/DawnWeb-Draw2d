@@ -7,6 +7,7 @@ ClassShape = draw2d.shape.layout.VerticalLayout.extend({
     init: function (attr) {
         this._super($.extend({bgColor: "#ffffff", color: "#000000", stroke: 1, radius: 0}, attr));
 
+        // Name Label
         this.classLabel = new draw2d.shape.basic.Label({
             text: "New Class",
             stroke: 1,

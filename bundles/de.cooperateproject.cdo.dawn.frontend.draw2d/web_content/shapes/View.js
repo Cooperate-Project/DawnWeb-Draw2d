@@ -1,3 +1,6 @@
+/**
+ * This is a custom version of the draw2d canvas to enable own policies and custom drop behavior.
+ */
 View = draw2d.Canvas.extend({
 
     init: function (id, legacyMode) {

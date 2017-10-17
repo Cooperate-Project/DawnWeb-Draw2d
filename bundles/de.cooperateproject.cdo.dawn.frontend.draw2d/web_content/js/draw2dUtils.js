@@ -1,5 +1,14 @@
+/**
+ * Provides utility methods to work with the draw2d canvas (view).
+ * @type {{getJSON: Draw2dUtils.getJSON, setJSON: Draw2dUtils.setJSON, setParentInformation: Draw2dUtils.setParentInformation, moveParentsBack: Draw2dUtils.moveParentsBack}}
+ */
 var Draw2dUtils = {
 
+    /**
+     * Returns the serialized version of all displayed figures.
+     * @param view a draw2d canvas
+     * @returns {string}
+     */
     getJSON: function (view) {
 
         // Iterate over figures to insert parent relating information for easier model traversion
@@ -14,6 +23,11 @@ var Draw2dUtils = {
         return doc;
     },
 
+    /**
+     * Adds all elements from the json to the provided canvas (view).
+     * @param view a draw2d canvas
+     * @param json a properly serialized version of draw2d figures
+     */
     setJSON: function (view, json) {
 
         // Read JSON
@@ -26,6 +40,10 @@ var Draw2dUtils = {
         });
     },
 
+    /**
+     * A utility method to insert parent information for z-order.
+     * @param view the draw2d canvas
+     */
     setParentInformation: function (view) {
         var figures = view.getFigures().data;
         $.each(figures, function (i, p) {
@@ -38,6 +56,11 @@ var Draw2dUtils = {
         });
     },
 
+    /**
+     * A utility method to correct the z-order of parent elements after de-serialization.
+     * @param figure a child figure
+     * @param view a draw2d canvas
+     */
     moveParentsBack: function (figure, view) {
         if (figure != null) {
             figure.toBack();
