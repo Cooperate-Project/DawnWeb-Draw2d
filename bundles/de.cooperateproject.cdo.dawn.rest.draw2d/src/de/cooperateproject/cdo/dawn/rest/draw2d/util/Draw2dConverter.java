@@ -20,18 +20,46 @@ import de.cooperateproject.cdo.dawn.rest.draw2d.dto.PackageShape;
 import de.cooperateproject.cdo.dawn.rest.draw2d.dto.RichConnection;
 import de.cooperateproject.cdo.dawn.rest.util.DawnWebUtil;
 
+/**
+ * The draw2d converter is the current solution of converting papyrus diagram
+ * information to draw2d data transfer objects. Basically this is a simple meta
+ * model to meta model transformation.
+ * 
+ * @author Sebastian Hahner (sebinside)
+ *
+ */
 public class Draw2dConverter {
 
+	// TODO: Maybe it is possible to refactor the class and package conversion
+	// by merging the conversion methods.
+
+	/**
+	 * Extracts all classes from a diagram.
+	 * 
+	 * @param diagram
+	 *            a papyrus diagram
+	 * @return a collection of class DTOs
+	 */
 	@SuppressWarnings("unchecked")
 	public static Collection<ClassShape> diagram2classes(Diagram diagram) {
-
-		// TODO: Test parent figure
-		// TODO: Implement package + connection (edges)
 
 		return elements2classes(diagram.getChildren(), 0, 0);
 
 	}
 
+	/**
+	 * Converts a collection of elements (nodes) to a collection of classes.
+	 * 
+	 * @param elements
+	 *            a collection of papyrus diagram nodes
+	 * @param baseX
+	 *            the base x position of the parent object (e.g. the root or a
+	 *            package)
+	 * @param baseY
+	 *            the base y position of the parent object (e.g. the root or a
+	 *            package)
+	 * @return a collection of class DTOs
+	 */
 	@SuppressWarnings("unchecked")
 	private static Collection<ClassShape> elements2classes(Collection<Object> elements, int baseX, int baseY) {
 
@@ -65,6 +93,19 @@ public class Draw2dConverter {
 		return classes;
 	}
 
+	/**
+	 * Converts a papyrus node to a class.
+	 * 
+	 * @param node
+	 *            the papyrus node from a diagram
+	 * @param baseX
+	 *            the base x position of the parent object (e.g. the root or a
+	 *            package)
+	 * @param baseY
+	 *            the base y position of the parent object (e.g. the root or a
+	 *            package)
+	 * @return a class DTO
+	 */
 	private static ClassShape node2class(Node node, int baseX, int baseY) {
 
 		ClassShape classShape = new ClassShape();
@@ -116,11 +157,31 @@ public class Draw2dConverter {
 		return classShape;
 	}
 
+	/**
+	 * Extracts all packages from a diagram.
+	 * 
+	 * @param diagram
+	 *            a papyrus diagram
+	 * @return a collection of package DTOs
+	 */
 	@SuppressWarnings("unchecked")
 	public static Collection<PackageShape> diagram2packages(Diagram diagram) {
 		return elements2packages(diagram.getChildren(), 0, 0);
 	}
 
+	/**
+	 * Converts a collection of elements (nodes) to a collection of packages.
+	 * 
+	 * @param elements
+	 *            a collection of papyrus diagram nodes
+	 * @param baseX
+	 *            the base x position of the parent object (e.g. the root or a
+	 *            package)
+	 * @param baseY
+	 *            the base y position of the parent object (e.g. the root or a
+	 *            package)
+	 * @return a collection of package DTOs
+	 */
 	private static Collection<PackageShape> elements2packages(Collection<Object> elements, int baseX, int baseY) {
 		ArrayList<PackageShape> packages = new ArrayList<PackageShape>();
 
@@ -144,6 +205,19 @@ public class Draw2dConverter {
 		return packages;
 	}
 
+	/**
+	 * Converts a papyrus node to a package.
+	 * 
+	 * @param node
+	 *            the papyrus node from a diagram
+	 * @param baseX
+	 *            the base x position of the parent object (e.g. the root or a
+	 *            package)
+	 * @param baseY
+	 *            the base y position of the parent object (e.g. the root or a
+	 *            package)
+	 * @return a package DTO
+	 */
 	private static PackageShape node2package(Node node, int baseX, int baseY) {
 
 		PackageShape packageShape = new PackageShape();
@@ -168,7 +242,8 @@ public class Draw2dConverter {
 			packageShape.setHeight(((Size) l).getHeight());
 		}
 
-		// TODO: aboardFigures
+		// TODO: aboardFigures (maybe never used by the client, maybe
+		// deprecated)
 
 		// Parent figure
 		if (node.eContainer() != null && !(node.eContainer() instanceof Diagram)) {
@@ -178,6 +253,13 @@ public class Draw2dConverter {
 		return packageShape;
 	}
 
+	/**
+	 * Extracts all connections from a diagram.
+	 * 
+	 * @param diagram
+	 *            a papyrus diagram
+	 * @return a collection of connection DTOs
+	 */
 	public static Collection<RichConnection> diagram2connections(Diagram diagram) {
 
 		ArrayList<RichConnection> connections = new ArrayList<RichConnection>();
@@ -192,6 +274,13 @@ public class Draw2dConverter {
 		return connections;
 	}
 
+	/**
+	 * Converts a diagram edge to a connection.
+	 * 
+	 * @param edge
+	 *            the diagram edge (connector)
+	 * @return a connection DTO
+	 */
 	private static RichConnection edge2connection(Connector edge) {
 
 		RichConnection connection = new RichConnection();

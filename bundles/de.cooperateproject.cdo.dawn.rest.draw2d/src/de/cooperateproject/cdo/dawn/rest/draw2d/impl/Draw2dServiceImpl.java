@@ -20,6 +20,12 @@ import de.cooperateproject.cdo.dawn.rest.util.ServiceFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * This implementation of the draw2d service can be used as a rest service.
+ * 
+ * @author Sebastian Hahner (sebinside)
+ *
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/draw2d")
 @Api(value = "/draw2d")
